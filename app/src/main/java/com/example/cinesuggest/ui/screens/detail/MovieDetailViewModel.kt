@@ -20,7 +20,7 @@ class MovieDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val userId = 1
-    private val movieId: Int =  1  //checkNotNull(savedStateHandle["movieId"])
+    private val movieId: Int = checkNotNull(savedStateHandle["movieId"]).toString().toInt()
 
     private val _uiState = MutableStateFlow<MovieDetailUiState>(MovieDetailUiState.Loading)
     val uiState: StateFlow<MovieDetailUiState> = _uiState.asStateFlow()

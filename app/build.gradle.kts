@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.dagger.hilt)
     ksp(libs.dagger.hilt.compiler)
     implementation(libs.dagger.hilt.navigation)
+    implementation(libs.androidx.navigation.compose)
 
     implementation(platform("com.squareup.okhttp3:okhttp-bom:5.3.0"))
 
