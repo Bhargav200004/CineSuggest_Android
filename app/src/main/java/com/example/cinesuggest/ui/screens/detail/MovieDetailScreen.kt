@@ -18,18 +18,22 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -44,6 +48,7 @@ import coil3.compose.AsyncImage
 import com.example.cinesuggest.data.model.MovieDetail
 import timber.log.Timber
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailScreen(
     viewModel: MovieDetailViewModel = hiltViewModel(),
@@ -52,7 +57,29 @@ fun MovieDetailScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
-
+        topBar = {
+            TopAppBar(
+                title = {},
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                    }
+                },
+                actions = {
+                    if (uiState is MovieDetailUiState.Success) {
+                        val movie = (uiState as MovieDetailUiState.Success).movieDetail
+                        FavoriteToggleButton(
+                            isFavorite = movie.isFavorite == true,
+                            onClick = { viewModel.onFavoriteClicked() }
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent
+                )
+            )
+        }
     ) { paddingValues ->
         Box(modifier = Modifier
             .fillMaxSize()

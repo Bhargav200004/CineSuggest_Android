@@ -16,6 +16,7 @@ coil = "3.3.0"
 retrofit2 = "3.0.0"
 room = "2.8.3"
 dagger-hilt-navigation = "1.1.0"
+navigationCompose = "2.8.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,6 +45,7 @@ room-ktx = { module = "androidx.room:room-ktx" , version.ref = "room"}
 dagger-hilt = { module = "com.google.dagger:hilt-android" , version.ref = "dagger-hilt"}
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler" , version.ref = "dagger-hilt"}
 dagger-hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose" , version.ref = "dagger-hilt-navigation"}
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-material-icons-extended = {  group = "androidx.compose.material", name = "material-icons-extended"}
 
 

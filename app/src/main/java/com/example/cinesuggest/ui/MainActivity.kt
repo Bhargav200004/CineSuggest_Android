@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,8 +44,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import coil3.compose.AsyncImage
 import com.example.cinesuggest.data.model.Movie
+import com.example.cinesuggest.ui.navigation.NavigationTransitions
+import com.example.cinesuggest.ui.navigation.Screen
 import com.example.cinesuggest.ui.screens.detail.MovieDetailScreen
 import com.example.cinesuggest.ui.screens.home.HomeUiState
 import com.example.cinesuggest.ui.screens.home.HomeViewModel
@@ -58,13 +68,43 @@ class MainActivity : ComponentActivity() {
         setContent {
             CineSuggestTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-//                    HomeScreen(
-//                        onMovieClick = {},
-//                        onProfileClick = {}
-//                    )
-                    MovieDetailScreen(
-                        onBackClick = {}
-                    )
+                    val navController = rememberNavController()
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.Home.route
+                    ) {
+                        composable(
+                            route = Screen.Home.route,
+                            exitTransition = NavigationTransitions.exitToLeftParallax(),
+                            popEnterTransition = NavigationTransitions.enterFromLeftParallax()
+
+                        ) {
+                            HomeScreen(
+                                onMovieClick = { movieId ->
+                                    navController.navigate(Screen.Detail.createRoute(movieId = movieId))
+                                },
+                                onProfileClick = {}
+                            )
+                        }
+
+                        composable(
+                            route = Screen.Detail.route,
+                            arguments = listOf(
+                                navArgument("movieId") { type = NavType.IntType }
+                            ),
+                            enterTransition = NavigationTransitions.enterFromRight(),
+                            popExitTransition = NavigationTransitions.exitToRight()
+                        ) {
+                            MovieDetailScreen(
+                                onBackClick = {
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
+                    }
+
+
                 }
             }
         }
@@ -132,7 +172,9 @@ fun HomeScreen(
                     println("Success ${state.movies}")
                     MovieGrid(
                         movies = state.movies,
-                        onMovieClick = {}
+                        onMovieClick = {movieId ->
+                            onMovieClick(movieId)
+                        }
                     )
 
                 }
