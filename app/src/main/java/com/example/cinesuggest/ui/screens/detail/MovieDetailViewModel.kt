@@ -5,13 +5,30 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinesuggest.data.model.MovieDetail
 import com.example.cinesuggest.data.repository.MovieRepository
+import com.example.cinesuggest.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.SerialName
 import javax.inject.Inject
+
+
+data class MovieDetailHolder(
+    val id: Int,
+    val title: String,
+    val posterUrl: String,
+    val releaseDate: String,
+    val runtime: String,
+    val genres: String, // API provides a parsed list
+    val revenue : Int,
+    val originalLanguage: String,
+    val overview: String,
+    val userRating: Int?  = 1,
+    val isFavorite: Boolean? = false
+)
 
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
@@ -22,8 +39,10 @@ class MovieDetailViewModel @Inject constructor(
     private val userId = 1
     private val movieId: Int = checkNotNull(savedStateHandle["movieId"]).toString().toInt()
 
-    private val _uiState = MutableStateFlow<MovieDetailUiState>(MovieDetailUiState.Loading)
-    val uiState: StateFlow<MovieDetailUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<UiState<MovieDetailHolder>>(UiState.Loading)
+    val uiState: StateFlow<UiState<MovieDetailHolder>> = _uiState.asStateFlow()
+
+    // Creating Object Mapper
 
     init {
         loadMovieDetail()
@@ -31,30 +50,30 @@ class MovieDetailViewModel @Inject constructor(
 
     private fun loadMovieDetail() {
         viewModelScope.launch {
-            _uiState.value = MovieDetailUiState.Loading
+            _uiState.value = UiState.Loading
             repository.getMovieDetail(movieId)
                 .onSuccess { detail ->
-                    _uiState.value = MovieDetailUiState.Success(detail)
+                    _uiState.value = UiState.Success(detail)
                 }
                 .onFailure {
-                    _uiState.value = MovieDetailUiState.Error(it.message ?: "Unknown error")
+                    _uiState.value = UiState.Error(it.message ?: "Unknown error")
                 }
         }
     }
 
     fun onFavoriteClicked() {
         val currentState = _uiState.value
-        if (currentState !is MovieDetailUiState.Success) return
+        if (currentState !is UiState.Success) return
 
-        val movie = currentState.movieDetail
-        val isCurrentlyFavorite = movie.isFavorite
+        val movie = currentState.data
+        val isCurrentlyFavorite = false
 
         viewModelScope.launch {
             // 1. Make the API call
             repository.toggleFavorite(userId, movie.id)
                 .onSuccess {
                     // 2. On success, update the local cache
-                    if (isCurrentlyFavorite == true) {
+                    if (isCurrentlyFavorite) {
                         repository.removeFavoriteFromCache(movie.id)
                     } else {
                         repository.addFavoriteToCache(movie)
@@ -62,8 +81,8 @@ class MovieDetailViewModel @Inject constructor(
                     // 3. Update the UI state
                     _uiState.update {
                         isCurrentlyFavorite?.let { it1 ->
-                            (it as MovieDetailUiState.Success).copy(
-                                movieDetail = movie.copy(isFavorite = !it1)
+                            (it as UiState.Success).copy(
+                                data = movie.copy()
                             )
                         }!!
                     }
@@ -76,14 +95,14 @@ class MovieDetailViewModel @Inject constructor(
 
     fun onRatingChanged(rating: Int) {
         val currentState = _uiState.value
-        if (currentState !is MovieDetailUiState.Success) return
+        if (currentState !is UiState.Success) return
 
         viewModelScope.launch {
             repository.rateMovie(userId, movieId, rating)
                 .onSuccess {
                     _uiState.update {
-                        (it as MovieDetailUiState.Success).copy(
-                            movieDetail = currentState.movieDetail.copy(userRating = rating)
+                        (it as UiState.Success).copy(
+                            data = currentState.data.copy(userRating = rating)
                         )
                     }
                 }
@@ -92,10 +111,4 @@ class MovieDetailViewModel @Inject constructor(
                 }
         }
     }
-}
-
-sealed interface MovieDetailUiState {
-    object Loading : MovieDetailUiState
-    data class Success(val movieDetail: MovieDetail) : MovieDetailUiState
-    data class Error(val message: String) : MovieDetailUiState
 }

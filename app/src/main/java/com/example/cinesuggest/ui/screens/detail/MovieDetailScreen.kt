@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import com.example.cinesuggest.data.model.MovieDetail
+import com.example.cinesuggest.utils.UiState
 import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,10 +67,10 @@ fun MovieDetailScreen(
                     }
                 },
                 actions = {
-                    if (uiState is MovieDetailUiState.Success) {
-                        val movie = (uiState as MovieDetailUiState.Success).movieDetail
+                    if (uiState is UiState.Success) {
+                        val movie = (uiState as UiState.Success).data
                         FavoriteToggleButton(
-                            isFavorite = movie.isFavorite == true,
+                            isFavorite = false,
                             onClick = { viewModel.onFavoriteClicked() }
                         )
                     }
@@ -85,20 +86,19 @@ fun MovieDetailScreen(
             .fillMaxSize()
             .padding(bottom = paddingValues.calculateBottomPadding())){
             when(val state = uiState){
-
-                is MovieDetailUiState.Success -> {
-                    Timber.tag("MovieDetailScreen").d(state.movieDetail.toString() + " Hello")
+                UiState.Loading -> {
+                    CircularProgressIndicator()
+                }
+                is UiState.Success -> {
                     MovieDetailContent(
-                        movie = state.movieDetail,
+                        movie = state.data,
                         onRatingChanged = {}
                     )
                 }
-                is MovieDetailUiState.Error -> {
+                is UiState.Error -> {
                     Timber.tag("MovieDetailScreen").e(state.message)
                 }
-                MovieDetailUiState.Loading -> {
-                    CircularProgressIndicator()
-                }
+
 
             }
         }
