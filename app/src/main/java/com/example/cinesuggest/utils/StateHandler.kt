@@ -9,3 +9,15 @@ sealed class UiState<out T> {
 
 // generic handler
 
+fun <T> handleUiState(
+    state: UiState<T>,
+    onLoading: () -> Unit = { println("Loading...") }, // Optional default
+    onError: (String) -> Unit = { msg -> println("Error: $msg") }, // Optional default
+    onSuccess: (T) -> Unit
+) {
+    when (state) {
+        is UiState.Loading -> onLoading()
+        is UiState.Error -> onError(state.message)
+        is UiState.Success -> onSuccess(state.data)
+    }
+}

@@ -21,6 +21,7 @@ interface MovieRepository {
     suspend fun rateMovie(userId : Int , movieId : Int , rating : Int ) : Result<Response<Unit>>
     suspend fun toggleFavorite(userId: Int, movieId: Int) : Result<Response<Unit>>
     fun getFavoritesCache() : Flow<List<FavoriteMovieEntity>>
+    suspend fun getFavouriteId(favoriteId : Int) : Boolean
     suspend fun addFavoriteToCache(movie: MovieDetail)
     suspend fun removeFavoriteFromCache(movieId : Int)
 }
@@ -76,5 +77,9 @@ class DefaultMovieRepository @Inject constructor(
     override suspend fun removeFavoriteFromCache(movieId: Int) {
         movieDao.delete(movieId = movieId)
     }
+
+    override suspend fun getFavouriteId(favoriteId: Int) : Boolean =
+        movieDao.getFavoriteId(favoriteId = favoriteId)
+
 
 }
