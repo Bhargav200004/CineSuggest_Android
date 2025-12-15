@@ -1,9 +1,10 @@
 package com.example.cinesuggest.domain.model
 
+
 data class Movie(
     val id: Int,
     val title: String,
-    val genre: String,
+    val genres: String,
     val posterUrl: String?,
 )
 
@@ -18,6 +19,13 @@ data class MovieDetail(
     val originalLanguage: String,
     val overview: String,
     val userRating: Int?  = 1,
+)
+
+data class FavoriteMovie(
+    val id: Int,
+    val title : String,
+    val posterUrl: String?,
+    val genres: String
 )
 
 data class RatedMovie(

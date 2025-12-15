@@ -3,6 +3,7 @@ package com.example.cinesuggest.data.remote
 import com.example.cinesuggest.data.remote.dto.FavoriteRequest
 import com.example.cinesuggest.data.remote.dto.MovieDto
 import com.example.cinesuggest.data.remote.dto.MovieDetailDto
+import com.example.cinesuggest.data.remote.dto.MoviesResponseDto
 import com.example.cinesuggest.data.remote.dto.RatingRequest
 import com.example.cinesuggest.data.remote.dto.RecommendationResponseDto
 import com.example.cinesuggest.data.remote.dto.UserProfile
@@ -19,7 +20,7 @@ interface ApiService{
     suspend fun getRecommendation(@Path("user_id") userId: Int) : RecommendationResponseDto
 
     @GET("movies")
-    suspend fun getAllMovies() : List<MovieDto>
+    suspend fun getAllMovies() : MoviesResponseDto
 
     @POST("rating")
     suspend fun rateMovie(@Body rating: RatingRequest) : Response<Unit>

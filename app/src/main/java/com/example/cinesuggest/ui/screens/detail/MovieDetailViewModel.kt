@@ -3,8 +3,8 @@ package com.example.cinesuggest.ui.screens.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cinesuggest.data.mapper.testFavourite
-import com.example.cinesuggest.data.mapper.toMovieDetailUiState
+import com.example.cinesuggest.data.mapper.toDomain
+import com.example.cinesuggest.data.mapper.toUiState
 import com.example.cinesuggest.domain.repository.MovieRepository
 import com.example.cinesuggest.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,7 +48,7 @@ class MovieDetailViewModel @Inject constructor(
                 .onSuccess { movieDetail ->
                     val isFavourite : Boolean = repository.getFavouriteId(favoriteId = movieDetail.id)
 
-                    _uiState.value = UiState.Success(movieDetail.toMovieDetailUiState().copy(isFavorite = isFavourite))
+                    _uiState.value = UiState.Success(movieDetail.toUiState().copy(isFavorite = isFavourite))
                 }
                 .onFailure {
                     _uiState.value = UiState.Error(it.message ?: "Unknown error")
@@ -70,7 +70,7 @@ class MovieDetailViewModel @Inject constructor(
                     if (isFavorite) {
                         repository.removeFavoriteFromCache(movie.id)
                     } else {
-                        repository.addFavoriteToCache(movie.testFavourite())
+                        repository.addFavoriteToCache(movie.toDomain())
                     }
                     // 3. Update the UI state
                     _uiState.update {

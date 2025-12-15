@@ -50,6 +50,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil3.compose.AsyncImage
 import com.example.cinesuggest.data.remote.dto.MovieDto
+import com.example.cinesuggest.domain.model.Movie
 import com.example.cinesuggest.ui.navigation.NavigationTransitions
 import com.example.cinesuggest.ui.navigation.Screen
 import com.example.cinesuggest.ui.screens.detail.MovieDetailScreen
@@ -167,7 +168,6 @@ fun HomeScreen(
                 }
 
                 is HomeUiState.Success -> {
-                    println("Success ${state.movies}")
                     MovieGrid(
                         movies = state.movies,
                         onMovieClick = {movieId ->
@@ -183,7 +183,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun MovieGrid(movies: List<MovieDto>, onMovieClick: (Int) -> Unit) {
+fun MovieGrid(movies: List<Movie>, onMovieClick: (Int) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(12.dp),
@@ -197,7 +197,7 @@ fun MovieGrid(movies: List<MovieDto>, onMovieClick: (Int) -> Unit) {
 }
 
 @Composable
-fun MovieItem(movie: MovieDto, onClick: () -> Unit) {
+fun MovieItem(movie: Movie, onClick: () -> Unit) {
     Card(
         onClick = onClick,
         elevation = CardDefaults.cardElevation(4.dp)
@@ -221,7 +221,7 @@ fun MovieItem(movie: MovieDto, onClick: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = movie.genre.replace("|", ", "),
+                    text = movie.genres.replace("|", ", "),
                     style = MaterialTheme.typography.bodySmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
