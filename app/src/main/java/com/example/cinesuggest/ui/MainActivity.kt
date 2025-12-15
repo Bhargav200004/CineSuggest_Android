@@ -49,7 +49,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil3.compose.AsyncImage
-import com.example.cinesuggest.data.remote.dto.Movie
+import com.example.cinesuggest.data.remote.dto.MovieDto
 import com.example.cinesuggest.ui.navigation.NavigationTransitions
 import com.example.cinesuggest.ui.navigation.Screen
 import com.example.cinesuggest.ui.screens.detail.MovieDetailScreen
@@ -183,7 +183,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun MovieGrid(movies: List<Movie>, onMovieClick: (Int) -> Unit) {
+fun MovieGrid(movies: List<MovieDto>, onMovieClick: (Int) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(12.dp),
@@ -197,7 +197,7 @@ fun MovieGrid(movies: List<Movie>, onMovieClick: (Int) -> Unit) {
 }
 
 @Composable
-fun MovieItem(movie: Movie, onClick: () -> Unit) {
+fun MovieItem(movie: MovieDto, onClick: () -> Unit) {
     Card(
         onClick = onClick,
         elevation = CardDefaults.cardElevation(4.dp)

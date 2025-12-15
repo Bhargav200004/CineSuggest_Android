@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinesuggest.data.mapper.testFavourite
-import com.example.cinesuggest.data.mapper.toMovieDetailUiDataHolder
+import com.example.cinesuggest.data.mapper.toMovieDetailUiState
 import com.example.cinesuggest.domain.repository.MovieRepository
 import com.example.cinesuggest.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,9 +41,6 @@ class MovieDetailViewModel @Inject constructor(
     }
 
 
-
-
-
     private fun loadMovieDetail() {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
@@ -51,7 +48,7 @@ class MovieDetailViewModel @Inject constructor(
                 .onSuccess { movieDetail ->
                     val isFavourite : Boolean = repository.getFavouriteId(favoriteId = movieDetail.id)
 
-                    _uiState.value = UiState.Success(movieDetail.toMovieDetailUiDataHolder().copy(isFavorite = isFavourite))
+                    _uiState.value = UiState.Success(movieDetail.toMovieDetailUiState().copy(isFavorite = isFavourite))
                 }
                 .onFailure {
                     _uiState.value = UiState.Error(it.message ?: "Unknown error")

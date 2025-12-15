@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.example.cinesuggest.data.local.AppDatabase
 import com.example.cinesuggest.data.local.dao.FavouriteMovieDao
 import com.example.cinesuggest.data.remote.ApiService
-import com.example.cinesuggest.domain.repository.DefaultMovieRepository
+import com.example.cinesuggest.data.repository.MovieRepositoryImpl
 import com.example.cinesuggest.domain.repository.MovieRepository
 import dagger.Module
 import dagger.Provides
@@ -80,6 +80,6 @@ object AppModule {
         apiService: ApiService,
         movieDao: FavouriteMovieDao
     ): MovieRepository {
-        return DefaultMovieRepository(apiService =  apiService , movieDao =  movieDao)
+        return MovieRepositoryImpl(apiService =  apiService , movieDao =  movieDao)
     }
 }

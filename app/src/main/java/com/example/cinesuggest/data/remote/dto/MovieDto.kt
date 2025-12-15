@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class Movie(
+data class MovieDto(
     val id: Int,
     val title: String,
     val genre: String,
@@ -14,7 +14,7 @@ data class Movie(
 )
 
 @Serializable
-data class MovieDetail(
+data class MovieDetailDto(
     val id: Int,
     val title: String,
     @SerialName("poster_path")
@@ -33,13 +33,11 @@ data class MovieDetail(
     val overview: String,
     @SerialName("user_rating")
     val userRating: Int?  = 1,
-//    @SerialName("is_favorite")
-//    val isFavorite: Boolean? = false
 )
 
 
 @Serializable
-data class RatedMovie(
+data class RatedMovieDto(
     val id: Int,
     val title: String,
     @SerialName("poster_url")

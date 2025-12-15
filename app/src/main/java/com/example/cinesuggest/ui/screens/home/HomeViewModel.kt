@@ -2,7 +2,7 @@ package com.example.cinesuggest.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cinesuggest.data.remote.dto.Movie
+import com.example.cinesuggest.data.remote.dto.MovieDto
 import com.example.cinesuggest.domain.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +16,7 @@ class HomeViewModel @Inject constructor(
     private val repository : MovieRepository
 ) : ViewModel(){
 
-    private val userId = 244
+    private val userId = 1
 
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val uiState : StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -42,6 +42,6 @@ class HomeViewModel @Inject constructor(
 
 sealed interface HomeUiState {
     object Loading : HomeUiState
-    data class Success(val movies : List<Movie>) : HomeUiState
+    data class Success(val movies : List<MovieDto>) : HomeUiState
     data class Error(val message : String) : HomeUiState
 }

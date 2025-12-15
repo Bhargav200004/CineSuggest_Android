@@ -9,5 +9,5 @@ data class UserProfile(
     @SerialName("profile_image_url")
     val profileImageUrl: String,
     @SerialName("recent_ratings")
-    val recentRatings: List<RatedMovie>
+    val recentRatings: List<RatedMovieDto>
 )

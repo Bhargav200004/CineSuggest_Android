@@ -3,11 +3,11 @@ package com.example.cinesuggest.data.remote.dto
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RecommendationResponse(
-    val recommendations: List<Movie>
+data class RecommendationResponseDto(
+    val recommendations: List<MovieDto>
 )
 
 @Serializable
-data class MoviesResponse(
-    val movies: List<Movie>
+data class MoviesResponseDto(
+    val movies: List<MovieDto>
 )
