@@ -19,7 +19,7 @@ interface ApiService{
     @POST("rating")
     suspend fun rateMovie(@Body rating: RatingRequest) : Response<Unit>
 
-    @POST
+    @POST("/favorites")
     suspend fun toggleFavorite(@Body body : FavoriteRequest) : Response<Unit>
 
     @GET("movies/{movie_id}")

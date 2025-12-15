@@ -44,8 +44,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.example.cinesuggest.data.model.MovieDetail
+import com.example.cinesuggest.utils.UiState
 import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +56,9 @@ fun MovieDetailScreen(
     viewModel: MovieDetailViewModel = hiltViewModel(),
     onBackClick:() -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val viewModel: MovieDetailViewModel = hiltViewModel()
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -66,11 +70,13 @@ fun MovieDetailScreen(
                     }
                 },
                 actions = {
-                    if (uiState is MovieDetailUiState.Success) {
-                        val movie = (uiState as MovieDetailUiState.Success).movieDetail
+                    if (uiState is UiState.Success) {
+                        val movie = (uiState as UiState.Success).data
                         FavoriteToggleButton(
-                            isFavorite = movie.isFavorite == true,
-                            onClick = { viewModel.onFavoriteClicked() }
+                            isFavorite = movie.isFavorite,
+                            onClick = {
+                                viewModel.onEvent(MovieDetailUiEventHolder.OnFavouriteClick(movie.isFavorite))
+                            }
                         )
                     }
                 },
@@ -85,20 +91,19 @@ fun MovieDetailScreen(
             .fillMaxSize()
             .padding(bottom = paddingValues.calculateBottomPadding())){
             when(val state = uiState){
-
-                is MovieDetailUiState.Success -> {
-                    Timber.tag("MovieDetailScreen").d(state.movieDetail.toString() + " Hello")
+                UiState.Loading -> {
+                    CircularProgressIndicator()
+                }
+                is UiState.Success -> {
                     MovieDetailContent(
-                        movie = state.movieDetail,
+                        movie = state.data,
                         onRatingChanged = {}
                     )
                 }
-                is MovieDetailUiState.Error -> {
+                is UiState.Error -> {
                     Timber.tag("MovieDetailScreen").e(state.message)
                 }
-                MovieDetailUiState.Loading -> {
-                    CircularProgressIndicator()
-                }
+
 
             }
         }
@@ -106,7 +111,7 @@ fun MovieDetailScreen(
 }
 
 @Composable
-fun MovieDetailContent (movie: MovieDetail, onRatingChanged: (Int) -> Unit) {
+fun MovieDetailContent (movie: MovieDetailUiDataHolder, onRatingChanged: (Int) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()

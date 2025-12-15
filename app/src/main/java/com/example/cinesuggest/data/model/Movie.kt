@@ -42,8 +42,8 @@ data class MovieDetail(
     val overview: String,
     @SerialName("user_rating")
     val userRating: Int?  = 1,
-    @SerialName("is_favorite")
-    val isFavorite: Boolean? = true
+//    @SerialName("is_favorite")
+//    val isFavorite: Boolean? = false
 )
 
 @Serializable
