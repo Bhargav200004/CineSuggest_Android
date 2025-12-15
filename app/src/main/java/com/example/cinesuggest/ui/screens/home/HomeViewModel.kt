@@ -2,15 +2,13 @@ package com.example.cinesuggest.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.cinesuggest.data.model.Movie
-import com.example.cinesuggest.data.repository.MovieRepository
+import com.example.cinesuggest.data.remote.dto.Movie
+import com.example.cinesuggest.domain.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel

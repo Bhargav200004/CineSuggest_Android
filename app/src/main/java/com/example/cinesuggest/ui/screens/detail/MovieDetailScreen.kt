@@ -1,7 +1,5 @@
 package com.example.cinesuggest.ui.screens.detail
 
-import android.util.Log
-import android.widget.RatingBar
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,7 +33,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,7 +43,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.example.cinesuggest.data.model.MovieDetail
 import com.example.cinesuggest.utils.UiState
 import timber.log.Timber
 
@@ -75,7 +71,7 @@ fun MovieDetailScreen(
                         FavoriteToggleButton(
                             isFavorite = movie.isFavorite,
                             onClick = {
-                                viewModel.onEvent(MovieDetailUiEventHolder.OnFavouriteClick(movie.isFavorite))
+                                viewModel.onEvent(MovieDetailUiEvent.OnFavouriteClick(movie.isFavorite))
                             }
                         )
                     }
@@ -111,7 +107,7 @@ fun MovieDetailScreen(
 }
 
 @Composable
-fun MovieDetailContent (movie: MovieDetailUiDataHolder, onRatingChanged: (Int) -> Unit) {
+fun MovieDetailContent (movie: MovieDetailUiState, onRatingChanged: (Int) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -3,10 +3,10 @@ package com.example.cinesuggest.di
 import android.content.Context
 import androidx.room.Room
 import com.example.cinesuggest.data.local.AppDatabase
-import com.example.cinesuggest.data.local.MovieDao
+import com.example.cinesuggest.data.local.dao.FavouriteMovieDao
 import com.example.cinesuggest.data.remote.ApiService
-import com.example.cinesuggest.data.repository.DefaultMovieRepository
-import com.example.cinesuggest.data.repository.MovieRepository
+import com.example.cinesuggest.domain.repository.DefaultMovieRepository
+import com.example.cinesuggest.domain.repository.MovieRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -70,7 +70,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMovieDao(database : AppDatabase) : MovieDao {
+    fun provideMovieDao(database : AppDatabase) : FavouriteMovieDao {
         return database.movieDao()
     }
 
@@ -78,7 +78,7 @@ object AppModule {
     @Singleton
     fun provideMovieRepository(
         apiService: ApiService,
-        movieDao: MovieDao
+        movieDao: FavouriteMovieDao
     ): MovieRepository {
         return DefaultMovieRepository(apiService =  apiService , movieDao =  movieDao)
     }

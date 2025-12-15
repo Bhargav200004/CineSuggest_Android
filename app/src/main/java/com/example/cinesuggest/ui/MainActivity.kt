@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,7 +49,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil3.compose.AsyncImage
-import com.example.cinesuggest.data.model.Movie
+import com.example.cinesuggest.data.remote.dto.Movie
 import com.example.cinesuggest.ui.navigation.NavigationTransitions
 import com.example.cinesuggest.ui.navigation.Screen
 import com.example.cinesuggest.ui.screens.detail.MovieDetailScreen

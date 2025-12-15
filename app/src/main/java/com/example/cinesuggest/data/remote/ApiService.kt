@@ -1,6 +1,11 @@
 package com.example.cinesuggest.data.remote
 
-import com.example.cinesuggest.data.model.*
+import com.example.cinesuggest.data.remote.dto.FavoriteRequest
+import com.example.cinesuggest.data.remote.dto.Movie
+import com.example.cinesuggest.data.remote.dto.MovieDetail
+import com.example.cinesuggest.data.remote.dto.RatingRequest
+import com.example.cinesuggest.data.remote.dto.RecommendationResponse
+import com.example.cinesuggest.data.remote.dto.UserProfile
 import retrofit2.Response
 
 import retrofit2.http.Body

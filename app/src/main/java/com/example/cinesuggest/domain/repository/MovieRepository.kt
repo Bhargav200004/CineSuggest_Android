@@ -1,13 +1,13 @@
-package com.example.cinesuggest.data.repository
+package com.example.cinesuggest.domain.repository
 
-import com.example.cinesuggest.data.local.FavoriteMovieEntity
-import com.example.cinesuggest.data.local.MovieDao
-import com.example.cinesuggest.data.local.toFavoriteMovieEntity
-import com.example.cinesuggest.data.model.FavoriteRequest
-import com.example.cinesuggest.data.model.MovieDetail
-import com.example.cinesuggest.data.model.MoviesResponse
-import com.example.cinesuggest.data.model.RatingRequest
-import com.example.cinesuggest.data.model.RecommendationResponse
+import com.example.cinesuggest.data.local.entity.FavoriteMovieEntity
+import com.example.cinesuggest.data.local.dao.FavouriteMovieDao
+import com.example.cinesuggest.data.mapper.toFavoriteMovieEntity
+import com.example.cinesuggest.data.remote.dto.FavoriteRequest
+import com.example.cinesuggest.data.remote.dto.MovieDetail
+import com.example.cinesuggest.data.remote.dto.MoviesResponse
+import com.example.cinesuggest.data.remote.dto.RatingRequest
+import com.example.cinesuggest.data.remote.dto.RecommendationResponse
 import com.example.cinesuggest.data.remote.ApiService
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
@@ -29,7 +29,7 @@ interface MovieRepository {
 @Singleton
 class DefaultMovieRepository @Inject constructor(
     private val apiService: ApiService,
-    private val movieDao : MovieDao
+    private val movieDao : FavouriteMovieDao
 ): MovieRepository {
 
 
@@ -71,11 +71,11 @@ class DefaultMovieRepository @Inject constructor(
         movieDao.getAllFavorites()
 
     override suspend fun addFavoriteToCache(movie: MovieDetail) {
-        movieDao.insert(movie.toFavoriteMovieEntity())
+        movieDao.insertFavourite(movie.toFavoriteMovieEntity())
     }
 
     override suspend fun removeFavoriteFromCache(movieId: Int) {
-        movieDao.delete(movieId = movieId)
+        movieDao.deleteFavourite(movieId = movieId)
     }
 
     override suspend fun getFavouriteId(favoriteId: Int) : Boolean =
