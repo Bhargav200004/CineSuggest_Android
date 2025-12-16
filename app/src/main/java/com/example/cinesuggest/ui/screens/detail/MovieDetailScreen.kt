@@ -70,7 +70,7 @@ fun MovieDetailScreen(
                         FavoriteToggleButton(
                             isFavorite = movie.isFavorite,
                             onClick = {
-                                viewModel.onEvent(MovieDetailUiEvent.OnFavouriteClick(movie.isFavorite))
+                                viewModel.onEvent(MovieDetailUiEvent.OnFavoriteClick(movie.isFavorite))
                             }
                         )
                     }
@@ -191,7 +191,7 @@ fun FavoriteToggleButton(isFavorite : Boolean, onClick: () -> Unit) {
     IconButton(onClick = onClick) {
         Icon(
             imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-            contentDescription = "Toggle Favourite",
+            contentDescription = "Toggle Favorite",
             tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
         )
     }

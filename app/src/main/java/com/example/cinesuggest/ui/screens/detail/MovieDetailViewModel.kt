@@ -34,7 +34,7 @@ class MovieDetailViewModel @Inject constructor(
 
     fun onEvent(event : MovieDetailUiEvent){
         when(event){
-            is MovieDetailUiEvent.OnFavouriteClick -> onFavoriteClicked(event.isFavorite)
+            is MovieDetailUiEvent.OnFavoriteClick -> onFavoriteClicked(event.isFavorite)
             is MovieDetailUiEvent.OnRatingChange -> TODO()
         }
 
@@ -46,9 +46,9 @@ class MovieDetailViewModel @Inject constructor(
             _uiState.value = UiState.Loading
             repository.getMovieDetail(movieId)
                 .onSuccess { movieDetail ->
-                    val isFavourite : Boolean = repository.isFavouriteCheck(favoriteMovieId = movieDetail.id)
+                    val isFavorite : Boolean = repository.isFavoriteCheck(favoriteMovieId = movieDetail.id)
 
-                    _uiState.value = UiState.Success(movieDetail.toUiState().copy(isFavorite = isFavourite))
+                    _uiState.value = UiState.Success(movieDetail.toUiState().copy(isFavorite = isFavorite))
                 }
                 .onFailure {
                     _uiState.value = UiState.Error(it.message ?: "Unknown error")

@@ -3,14 +3,14 @@ package com.example.cinesuggest.di
 import android.content.Context
 import androidx.room.Room
 import com.example.cinesuggest.data.local.AppDatabase
-import com.example.cinesuggest.data.local.dao.FavouriteMovieDao
+import com.example.cinesuggest.data.local.dao.FavoriteMovieDao
 import com.example.cinesuggest.data.remote.ApiService
 import com.example.cinesuggest.data.repository.MovieRepositoryImpl
+import com.example.cinesuggest.data.repository.datasource.MovieLocalDataSource
 import com.example.cinesuggest.data.repository.datasource.MovieLocalDataSourceImpl
+import com.example.cinesuggest.data.repository.datasource.MovieRemoteDataSource
 import com.example.cinesuggest.data.repository.datasource.MovieRemoteDataSourceImpl
 import com.example.cinesuggest.domain.repository.MovieRepository
-import com.example.cinesuggest.domain.repository.datasource.MovieLocalDataSource
-import com.example.cinesuggest.domain.repository.datasource.MovieRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -74,7 +74,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMovieDao(database : AppDatabase) : FavouriteMovieDao {
+    fun provideMovieDao(database : AppDatabase) : FavoriteMovieDao {
         return database.movieDao()
     }
 
@@ -86,7 +86,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideLocalDataSource(dao : FavouriteMovieDao) : MovieLocalDataSource{
+    fun provideLocalDataSource(dao : FavoriteMovieDao) : MovieLocalDataSource{
         return MovieLocalDataSourceImpl(dao = dao)
     }
 
