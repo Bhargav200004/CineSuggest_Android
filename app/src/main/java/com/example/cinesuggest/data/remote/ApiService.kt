@@ -1,6 +1,12 @@
 package com.example.cinesuggest.data.remote
 
-import com.example.cinesuggest.data.model.*
+import com.example.cinesuggest.data.remote.dto.FavoriteRequest
+import com.example.cinesuggest.data.remote.dto.MovieDto
+import com.example.cinesuggest.data.remote.dto.MovieDetailDto
+import com.example.cinesuggest.data.remote.dto.MoviesResponseDto
+import com.example.cinesuggest.data.remote.dto.RatingRequest
+import com.example.cinesuggest.data.remote.dto.RecommendationResponseDto
+import com.example.cinesuggest.data.remote.dto.UserProfile
 import retrofit2.Response
 
 import retrofit2.http.Body
@@ -11,10 +17,10 @@ import retrofit2.http.Path
 interface ApiService{
 
     @GET("recommend/{user_id}")
-    suspend fun getRecommendation(@Path("user_id") userId: Int) : RecommendationResponse
+    suspend fun getRecommendation(@Path("user_id") userId: Int) : RecommendationResponseDto
 
     @GET("movies")
-    suspend fun getAllMovies() : List<Movie>
+    suspend fun getAllMovies() : MoviesResponseDto
 
     @POST("rating")
     suspend fun rateMovie(@Body rating: RatingRequest) : Response<Unit>
@@ -23,10 +29,10 @@ interface ApiService{
     suspend fun toggleFavorite(@Body body : FavoriteRequest) : Response<Unit>
 
     @GET("movies/{movie_id}")
-    suspend fun getMovieDetail(@Path("movie_id") movieId: Int): MovieDetail
+    suspend fun getMovieDetail(@Path("movie_id") movieId: Int): MovieDetailDto
 
     @GET("user/{user_id}/favorites")
-    suspend fun getFavorites(@Path("user_id") userId: Int): List<Movie>
+    suspend fun getFavorites(@Path("user_id") userId: Int): List<MovieDto>
 
     @GET("user/{user_id}/profile")
     suspend fun getProfile(@Path("user_id") userId: Int): UserProfile
