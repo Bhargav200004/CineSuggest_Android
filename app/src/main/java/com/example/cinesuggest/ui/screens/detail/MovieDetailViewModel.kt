@@ -46,7 +46,7 @@ class MovieDetailViewModel @Inject constructor(
             _uiState.value = UiState.Loading
             repository.getMovieDetail(movieId)
                 .onSuccess { movieDetail ->
-                    val isFavourite : Boolean = repository.getFavouriteId(favoriteId = movieDetail.id)
+                    val isFavourite : Boolean = repository.isFavouriteCheck(favoriteMovieId = movieDetail.id)
 
                     _uiState.value = UiState.Success(movieDetail.toUiState().copy(isFavorite = isFavourite))
                 }
@@ -68,9 +68,9 @@ class MovieDetailViewModel @Inject constructor(
                 .onSuccess {
                     // 2. On success, update the local cache
                     if (isFavorite) {
-                        repository.removeFavoriteFromCache(movie.id)
+                        repository.removeFavorite(movie.id)
                     } else {
-                        repository.addFavoriteToCache(movie.toDomain())
+                        repository.addFavorite(movie.toDomain())
                     }
                     // 3. Update the UI state
                     _uiState.update {

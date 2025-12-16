@@ -6,11 +6,11 @@ import com.example.cinesuggest.data.local.AppDatabase
 import com.example.cinesuggest.data.local.dao.FavouriteMovieDao
 import com.example.cinesuggest.data.remote.ApiService
 import com.example.cinesuggest.data.repository.MovieRepositoryImpl
-import com.example.cinesuggest.data.repository.datasource.MovieLocalSource
-import com.example.cinesuggest.data.repository.datasource.MovieLocalSourceImpl
-import com.example.cinesuggest.data.repository.datasource.MovieRemoteDataSource
+import com.example.cinesuggest.data.repository.datasource.MovieLocalDataSourceImpl
 import com.example.cinesuggest.data.repository.datasource.MovieRemoteDataSourceImpl
 import com.example.cinesuggest.domain.repository.MovieRepository
+import com.example.cinesuggest.domain.repository.datasource.MovieLocalDataSource
+import com.example.cinesuggest.domain.repository.datasource.MovieRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -86,15 +86,15 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideLocalDataSource(dao : FavouriteMovieDao) : MovieLocalSource{
-        return MovieLocalSourceImpl(dao = dao)
+    fun provideLocalDataSource(dao : FavouriteMovieDao) : MovieLocalDataSource{
+        return MovieLocalDataSourceImpl(dao = dao)
     }
 
     @Provides
     @Singleton
     fun provideMovieRepository(
         remoteDataSource: MovieRemoteDataSource,
-        localDataSource: MovieLocalSource
+        localDataSource: MovieLocalDataSource
     ): MovieRepository {
         return MovieRepositoryImpl(
             remoteDataSource = remoteDataSource,
