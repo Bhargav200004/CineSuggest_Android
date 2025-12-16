@@ -10,8 +10,8 @@ interface MovieRepository {
     suspend fun getRecommendation(userId : Int) : Result<List<Movie>>
     suspend fun getAllMovies() : Result<List<Movie>>
     suspend fun getMovieDetail(movieId : Int) : Result<MovieDetail>
-    suspend fun rateMovie(userId : Int , movieId : Int , rating : Int ) : Result<Response<Unit>>
-    suspend fun toggleFavorite(userId: Int, movieId: Int) : Result<Response<Unit>>
+    suspend fun rateMovie(userId : Int , movieId : Int , rating : Int ) : Result<Unit>
+    suspend fun toggleFavorite(userId: Int, movieId: Int) : Result<Unit>
     fun getFavoritesCache() : Flow<List<FavoriteMovie>>
     suspend fun getFavouriteId(favoriteId : Int) : Boolean
     suspend fun addFavoriteToCache(movieDetail: MovieDetail)

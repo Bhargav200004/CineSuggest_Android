@@ -6,6 +6,10 @@ import com.example.cinesuggest.data.local.AppDatabase
 import com.example.cinesuggest.data.local.dao.FavouriteMovieDao
 import com.example.cinesuggest.data.remote.ApiService
 import com.example.cinesuggest.data.repository.MovieRepositoryImpl
+import com.example.cinesuggest.data.repository.datasource.MovieLocalSource
+import com.example.cinesuggest.data.repository.datasource.MovieLocalSourceImpl
+import com.example.cinesuggest.data.repository.datasource.MovieRemoteDataSource
+import com.example.cinesuggest.data.repository.datasource.MovieRemoteDataSourceImpl
 import com.example.cinesuggest.domain.repository.MovieRepository
 import dagger.Module
 import dagger.Provides
@@ -76,10 +80,25 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideRemoteDataSource(apiServer : ApiService) : MovieRemoteDataSource {
+        return MovieRemoteDataSourceImpl(apiService = apiServer)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocalDataSource(dao : FavouriteMovieDao) : MovieLocalSource{
+        return MovieLocalSourceImpl(dao = dao)
+    }
+
+    @Provides
+    @Singleton
     fun provideMovieRepository(
-        apiService: ApiService,
-        movieDao: FavouriteMovieDao
+        remoteDataSource: MovieRemoteDataSource,
+        localDataSource: MovieLocalSource
     ): MovieRepository {
-        return MovieRepositoryImpl(apiService =  apiService , movieDao =  movieDao)
+        return MovieRepositoryImpl(
+            remoteDataSource = remoteDataSource,
+            localDataSource = localDataSource
+        )
     }
 }
