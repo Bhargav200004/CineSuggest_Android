@@ -49,7 +49,6 @@ import timber.log.Timber
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailScreen(
-    viewModel: MovieDetailViewModel = hiltViewModel(),
     onBackClick:() -> Unit
 ) {
     val viewModel: MovieDetailViewModel = hiltViewModel()

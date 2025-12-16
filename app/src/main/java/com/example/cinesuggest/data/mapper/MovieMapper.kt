@@ -17,10 +17,9 @@ import com.example.cinesuggest.ui.screens.detail.MovieDetailUiState
 // uiState -> domain
 
 
-
 // Movie
 // Dto -> domain
-fun MovieDto.toDomain() : Movie{
+fun MovieDto.toDomain(): Movie {
     return Movie(
         id = this.id,
         title = this.title,
@@ -35,74 +34,4 @@ fun MovieDto.toDomain() : Movie{
 
 // uiState -> domain
 // TODO : when i create Ui State for Movie
-
-
-// Movie Detail
-// Dto -> domain
-fun MovieDetailDto.toDomain() : MovieDetail {
-    return MovieDetail(
-        id = this.id,
-        title = this.title,
-        posterUrl = this.posterUrl,
-        releaseDate = this.releaseDate,
-        runtime = this.runtime,
-        genres = this.genres,
-        revenue = this.revenue,
-        originalLanguage = this.originalLanguage,
-        overview = this.overview
-    )
-}
-
-// domain -> uiState
-fun MovieDetail.toUiState() : MovieDetailUiState {
-    return MovieDetailUiState(
-        id = this.id,
-        title = this.title,
-        posterUrl = this.posterUrl,
-        releaseDate = this.releaseDate,
-        runtime = this.runtime,
-        genres = this.genres,
-        revenue =  this.revenue,
-        originalLanguage = this.originalLanguage,
-        overview = this.overview,
-    )
-}
-
-// uiState -> domain
-fun MovieDetailUiState.toDomain() : MovieDetail {
-    return MovieDetail(
-        id = this.id,
-        title = this.title,
-        posterUrl = this.posterUrl,
-        releaseDate = this.releaseDate,
-        runtime = this.runtime,
-        genres = this.genres,
-        revenue =  this.revenue,
-        originalLanguage = this.originalLanguage,
-        overview = this.overview,
-        userRating = this.userRating
-    )
-}
-
-
-
-// Domain -> Entity
-fun MovieDetail.toEntity() : FavoriteMovieEntity {
-    return FavoriteMovieEntity(
-        id = this.id,
-        title = this.title,
-        posterUrl = this.posterUrl,
-        genre = this.genres
-    )
-}
-
-// Entity -> Domain
-fun FavoriteMovieEntity.toDomain() : FavoriteMovie{
-    return FavoriteMovie(
-        id = this.id,
-        title = this.title,
-        posterUrl = this.posterUrl,
-        genres = this.genre
-    )
-}
 

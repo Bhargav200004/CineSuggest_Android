@@ -5,12 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.cinesuggest.data.remote.dto.MovieDto
 import com.example.cinesuggest.domain.model.Movie
 import com.example.cinesuggest.domain.repository.MovieRepository
+import com.example.cinesuggest.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -19,8 +21,8 @@ class HomeViewModel @Inject constructor(
 
     private val userId = 1
 
-    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
-    val uiState : StateFlow<HomeUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<UiState<HomeUiState>>(UiState.Loading)
+    val uiState : StateFlow<UiState<HomeUiState>> = _uiState.asStateFlow()
 
     init {
         loadRecommendation()
@@ -28,21 +30,14 @@ class HomeViewModel @Inject constructor(
 
     private fun loadRecommendation() {
         viewModelScope.launch {
-            _uiState.value = HomeUiState.Loading
+            _uiState.value = UiState.Loading
             repository.getRecommendation(userId = userId)
-                .onSuccess {response ->
-                    _uiState.value = HomeUiState.Success(response)
+                .onSuccess {movies ->
+                    _uiState.value = UiState.Success(data = HomeUiState(movies = movies))
                 }
                 .onFailure {
-                    _uiState.value = HomeUiState.Error(it.message ?: "Unknown Error")
+                    _uiState.value = UiState.Error(it.message ?: "Unknown Error")
                 }
-
         }
     }
-}
-
-sealed interface HomeUiState {
-    object Loading : HomeUiState
-    data class Success(val movies : List<Movie>) : HomeUiState
-    data class Error(val message : String) : HomeUiState
 }

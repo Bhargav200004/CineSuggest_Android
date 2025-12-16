@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.map
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.cancellation.CancellationException
 
 @Singleton
 class MovieRepositoryImpl @Inject constructor(
@@ -27,6 +28,7 @@ class MovieRepositoryImpl @Inject constructor(
         return try {
             Result.success(apiCall.invoke())
         } catch (e : Exception) {
+            if (e is CancellationException) throw e
             Result.failure(e)
         }
     }
