@@ -32,7 +32,7 @@ data class MovieDetailDto(
     @SerialName("overview")
     val overview: String,
     @SerialName("user_rating")
-    val userRating: Int?  = 1,
+    val userRating: Int?  = 0,
 )
 
 

@@ -92,7 +92,13 @@ fun MovieDetailScreen(
                 is UiState.Success -> {
                     MovieDetailContent(
                         movie = state.data,
-                        onRatingChanged = {}
+                        onRatingChanged = { rating ->
+                            viewModel.onEvent(
+                                MovieDetailUiEvent.OnRatingChange(
+                                    rating = rating
+                                )
+                            )
+                        }
                     )
                 }
                 is UiState.Error -> {
@@ -131,9 +137,9 @@ fun MovieDetailContent (movie: MovieDetailUiState, onRatingChanged: (Int) -> Uni
             Spacer(modifier = Modifier.height(8.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                InfoChip(text = movie.releaseDate.toString())
+                InfoChip(text = movie.releaseDate)
                 InfoChip(text = "${movie.runtime} min")
-                movie.genres.take(2).forEach { InfoChip(text = movie.genres) }
+                InfoChip(text = movie.genres)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -141,7 +147,7 @@ fun MovieDetailContent (movie: MovieDetailUiState, onRatingChanged: (Int) -> Uni
             Text("Your Rating" , style = MaterialTheme.typography.titleMedium , fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(8.dp))
             RatingBar(
-                currentRating = movie.userRating ?: 4,
+                currentRating = movie.userRating,
                 onRatingChanged = onRatingChanged
             )
 
