@@ -1,5 +1,6 @@
 package com.example.cinesuggest.ui.screens.detail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -27,6 +29,8 @@ class MovieDetailViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<UiState<MovieDetailUiState>>(UiState.Loading)
     val uiState: StateFlow<UiState<MovieDetailUiState>> = _uiState.asStateFlow()
+
+    var count = 0
 
     init {
         loadMovieDetail()
@@ -93,6 +97,8 @@ class MovieDetailViewModel @Inject constructor(
     fun onRatingChanged(rating: Int) {
         val currentState = _uiState.value
         if (currentState !is UiState.Success) return
+        count++;
+        Timber.tag("Checking Call").d("Checking%s", count)
 
         viewModelScope.launch {
             repository.rateMovie(userId, movieId, rating)
