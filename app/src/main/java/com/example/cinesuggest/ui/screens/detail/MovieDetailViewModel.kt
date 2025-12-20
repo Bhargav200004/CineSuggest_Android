@@ -30,7 +30,6 @@ class MovieDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState<MovieDetailUiState>>(UiState.Loading)
     val uiState: StateFlow<UiState<MovieDetailUiState>> = _uiState.asStateFlow()
 
-    var count = 0
 
     init {
         loadMovieDetail()
@@ -97,8 +96,6 @@ class MovieDetailViewModel @Inject constructor(
     fun onRatingChanged(rating: Int) {
         val currentState = _uiState.value
         if (currentState !is UiState.Success) return
-        count++;
-        Timber.tag("Checking Call").d("Checking%s", count)
 
         viewModelScope.launch {
             repository.rateMovie(userId, movieId, rating)

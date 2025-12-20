@@ -1,18 +1,15 @@
 package com.example.cinesuggest.ui.screens.detail
 
 import CinematicRatingBar
+import android.view.HapticFeedbackConstants
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,8 +29,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,20 +43,16 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -69,11 +60,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.example.cinesuggest.ui.components.GalaxyRatingBar
+import com.example.cinesuggest.ui.components.CinematicHeartButton
 import com.example.cinesuggest.utils.UiState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -96,7 +89,7 @@ fun MovieDetailScreen(
                 actions = {
                     if (uiState is UiState.Success) {
                         val movie = (uiState as UiState.Success).data
-                        FavoriteToggleButton(
+                        CinematicHeartButton(
                             isFavorite = movie.isFavorite,
                             onClick = {
                                 viewModel.onEvent(MovieDetailUiEvent.OnFavoriteClick(movie.isFavorite))
@@ -220,17 +213,6 @@ fun InfoChip(text : String) {
             text = text,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(horizontal = 8.dp , vertical = 4.dp)
-        )
-    }
-}
-
-@Composable
-fun FavoriteToggleButton(isFavorite : Boolean, onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        Icon(
-            imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-            contentDescription = "Toggle Favorite",
-            tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
