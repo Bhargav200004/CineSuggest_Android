@@ -1,5 +1,6 @@
 package com.example.cinesuggest.ui.screens.detail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -28,6 +30,8 @@ class MovieDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState<MovieDetailUiState>>(UiState.Loading)
     val uiState: StateFlow<UiState<MovieDetailUiState>> = _uiState.asStateFlow()
 
+    var count = 0
+
     init {
         loadMovieDetail()
     }
@@ -35,7 +39,7 @@ class MovieDetailViewModel @Inject constructor(
     fun onEvent(event : MovieDetailUiEvent){
         when(event){
             is MovieDetailUiEvent.OnFavoriteClick -> onFavoriteClicked(event.isFavorite)
-            is MovieDetailUiEvent.OnRatingChange -> TODO()
+            is MovieDetailUiEvent.OnRatingChange -> onRatingChanged(event.rating)
         }
 
     }
@@ -44,7 +48,10 @@ class MovieDetailViewModel @Inject constructor(
     private fun loadMovieDetail() {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
-            repository.getMovieDetail(movieId)
+            repository.getMovieDetail(
+                movieId,
+                userId = userId
+            )
                 .onSuccess { movieDetail ->
                     val isFavorite : Boolean = repository.isFavoriteCheck(favoriteMovieId = movieDetail.id)
 
@@ -72,7 +79,6 @@ class MovieDetailViewModel @Inject constructor(
                     } else {
                         repository.addFavorite(movie.toDomain())
                     }
-                    // 3. Update the UI state
                     _uiState.update {
                             (it as UiState.Success).copy(
                                 data = movie.copy(
@@ -91,6 +97,8 @@ class MovieDetailViewModel @Inject constructor(
     fun onRatingChanged(rating: Int) {
         val currentState = _uiState.value
         if (currentState !is UiState.Success) return
+        count++;
+        Timber.tag("Checking Call").d("Checking%s", count)
 
         viewModelScope.launch {
             repository.rateMovie(userId, movieId, rating)

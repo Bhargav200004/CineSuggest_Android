@@ -21,8 +21,8 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getAllMovies(): Result<List<Movie>> =
         remoteDataSource.getAllMovies()
 
-    override suspend fun getMovieDetail(movieId: Int): Result<MovieDetail> =
-        remoteDataSource.getMovieDetail(movieId = movieId)
+    override suspend fun getMovieDetail(movieId: Int , userId : Int): Result<MovieDetail> =
+        remoteDataSource.getMovieDetail(movieId = movieId , userId = userId)
 
     override suspend fun rateMovie(
         userId: Int,

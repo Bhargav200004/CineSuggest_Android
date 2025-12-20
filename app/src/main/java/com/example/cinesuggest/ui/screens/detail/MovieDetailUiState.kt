@@ -10,6 +10,6 @@ data class MovieDetailUiState(
     val revenue : Int,
     val originalLanguage: String,
     val overview: String,
-    val userRating: Int?  = 1,
+    val userRating: Int  = 0,
     val isFavorite: Boolean = false
 )

@@ -15,7 +15,8 @@ fun MovieDetailDto.toDomain(): MovieDetail {
         genres = this.genres,
         revenue = this.revenue,
         originalLanguage = this.originalLanguage,
-        overview = this.overview
+        overview = this.overview,
+        userRating = this.userRating
     )
 }
 
@@ -30,6 +31,7 @@ fun MovieDetail.toUiState(): MovieDetailUiState {
         revenue = this.revenue,
         originalLanguage = this.originalLanguage,
         overview = this.overview,
+        userRating = this.userRating ?: 0
     )
 }
 
