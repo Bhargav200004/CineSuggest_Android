@@ -1,8 +1,10 @@
 package com.example.cinesuggest.domain.repository
 
+import com.example.cinesuggest.data.remote.dto.UserResponseDto
 import com.example.cinesuggest.domain.model.FavoriteMovie
 import com.example.cinesuggest.domain.model.Movie
 import com.example.cinesuggest.domain.model.MovieDetail
+import com.example.cinesuggest.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
@@ -15,4 +17,5 @@ interface MovieRepository {
     suspend fun isFavoriteCheck(favoriteMovieId : Int) : Boolean
     suspend fun addFavorite(movieDetail: MovieDetail)
     suspend fun removeFavorite(movieId : Int)
+    suspend fun registerUser(username: String) : Result<User>
 }

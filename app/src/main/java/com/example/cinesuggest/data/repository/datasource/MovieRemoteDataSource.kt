@@ -4,8 +4,10 @@ import com.example.cinesuggest.data.mapper.toDomain
 import com.example.cinesuggest.data.remote.ApiService
 import com.example.cinesuggest.data.remote.dto.FavoriteRequest
 import com.example.cinesuggest.data.remote.dto.RatingRequest
+import com.example.cinesuggest.data.remote.dto.UserCreateRequest
 import com.example.cinesuggest.domain.model.Movie
 import com.example.cinesuggest.domain.model.MovieDetail
+import com.example.cinesuggest.domain.model.User
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -15,6 +17,7 @@ interface MovieRemoteDataSource {
     suspend fun getMovieDetail(movieId : Int , userId : Int) : Result<MovieDetail>
     suspend fun rateMovie(userId : Int , movieId : Int , rating : Int ) : Result<Unit>
     suspend fun toggleFavorite(userId: Int, movieId: Int) : Result<Unit>
+    suspend fun registerUser(username : String) : Result<User>
 }
 
 class MovieRemoteDataSourceImpl @Inject constructor(
@@ -56,5 +59,11 @@ class MovieRemoteDataSourceImpl @Inject constructor(
         safeApiCall {
             apiService.toggleFavorite(FavoriteRequest(userId = userId , movieId = movieId))
         }
+
+    override suspend fun registerUser(username: String): Result<User> =
+        safeApiCall {
+            apiService.createUser(UserCreateRequest(username = username)).toDomain()
+        }
+
 
 }

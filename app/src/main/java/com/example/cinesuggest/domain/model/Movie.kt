@@ -28,6 +28,11 @@ data class FavoriteMovie(
     val genres: String
 )
 
+data class User(
+    val id : Int,
+    val username: String
+)
+
 data class RatedMovie(
     val id: Int,
     val title: String,

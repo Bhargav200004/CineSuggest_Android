@@ -20,3 +20,8 @@ data class FavoriteRequest(
     @SerialName("movie_id")
     val movieId: Int,
 )
+
+@Serializable
+data class UserCreateRequest(
+    val username: String
+)

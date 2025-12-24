@@ -86,6 +86,9 @@ fun HomeScreen(
                 .padding(paddingValues = paddingValues)
         ) {
             when (val state = uiState) {
+                UiState.Idle -> {
+
+                }
                 is UiState.Error -> {
                     Text(
                         text = state.message,

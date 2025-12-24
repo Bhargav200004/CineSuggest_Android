@@ -2,6 +2,7 @@ package com.example.cinesuggest.utils
 
 
 sealed class UiState<out T> {
+    data object Idle : UiState<Nothing>()
     data object Loading : UiState<Nothing>()
     data class Success<out T>(val data: T) : UiState<T>()
     data class Error(val message: String) : UiState<Nothing>()
@@ -19,5 +20,6 @@ fun <T> handleUiState(
         is UiState.Loading -> onLoading()
         is UiState.Error -> onError(state.message)
         is UiState.Success -> onSuccess(state.data)
+        UiState.Idle -> TODO()
     }
 }

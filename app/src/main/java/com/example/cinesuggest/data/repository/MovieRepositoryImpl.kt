@@ -1,10 +1,12 @@
 package com.example.cinesuggest.data.repository
 
+import com.example.cinesuggest.data.remote.dto.UserResponseDto
 import com.example.cinesuggest.data.repository.datasource.MovieLocalDataSource
 import com.example.cinesuggest.data.repository.datasource.MovieRemoteDataSource
 import com.example.cinesuggest.domain.model.FavoriteMovie
 import com.example.cinesuggest.domain.model.Movie
 import com.example.cinesuggest.domain.model.MovieDetail
+import com.example.cinesuggest.domain.model.User
 import com.example.cinesuggest.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -42,6 +44,11 @@ class MovieRepositoryImpl @Inject constructor(
         remoteDataSource.toggleFavorite(
             userId = userId,
             movieId = movieId
+        )
+
+    override suspend fun registerUser(username: String): Result<User> =
+        remoteDataSource.registerUser(
+            username = username
         )
 
     override fun getFavorites(): Flow<List<FavoriteMovie>> =

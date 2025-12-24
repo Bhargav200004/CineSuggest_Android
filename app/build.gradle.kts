@@ -40,6 +40,9 @@ android {
         compose = true
         buildConfig = true
     }
+    kotlinOptions {
+        freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
+    }
 }
 
 dependencies {
@@ -87,5 +90,8 @@ dependencies {
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
 
     implementation(libs.androidx.material.icons.extended)
+
+
+    implementation("androidx.datastore:datastore-preferences:1.2.0")
 
 }

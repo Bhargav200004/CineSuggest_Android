@@ -6,7 +6,8 @@ import com.example.cinesuggest.data.remote.dto.MovieDetailDto
 import com.example.cinesuggest.data.remote.dto.MoviesResponseDto
 import com.example.cinesuggest.data.remote.dto.RatingRequest
 import com.example.cinesuggest.data.remote.dto.RecommendationResponseDto
-import com.example.cinesuggest.data.remote.dto.UserProfile
+import com.example.cinesuggest.data.remote.dto.UserCreateRequest
+import com.example.cinesuggest.data.remote.dto.UserResponseDto
 import retrofit2.Response
 
 import retrofit2.http.Body
@@ -35,6 +36,6 @@ interface ApiService{
     @GET("user/{user_id}/favorites")
     suspend fun getFavorites(@Path("user_id") userId: Int): List<MovieDto>
 
-    @GET("user/{user_id}/profile")
-    suspend fun getProfile(@Path("user_id") userId: Int): UserProfile
+    @POST("users/")
+    suspend fun createUser(@Body body: UserCreateRequest): UserResponseDto
 }
