@@ -11,5 +11,6 @@ data class MovieDetailUiState(
     val originalLanguage: String,
     val overview: String,
     val userRating: Int  = 0,
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
+    val userId : Int = 1
 )

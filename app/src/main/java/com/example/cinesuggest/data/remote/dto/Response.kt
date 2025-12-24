@@ -11,3 +11,9 @@ data class RecommendationResponseDto(
 data class MoviesResponseDto(
     val movies: List<MovieDto>
 )
+
+@Serializable
+data class UserResponseDto(
+    val id: Int,
+    val username : String
+)
